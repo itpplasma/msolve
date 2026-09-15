@@ -56,7 +56,9 @@ typedef struct{
   nvars_t nvars;
   nvars_t elim;
   int32_t ngens;
-  int32_t nterms;
+  /* total number of terms over all generators; the exponent array exps
+   * has nterms * nvars entries, so every index into it is 64-bit */
+  int64_t nterms;
   int32_t field_char;
   /* counts change of variable orders:
    * x1 <-> xn

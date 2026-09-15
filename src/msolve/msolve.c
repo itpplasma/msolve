@@ -312,7 +312,7 @@ void free_data_gens(data_gens_ff_t *gens) {
   }
   free(gens->vnames);
   if (gens->field_char == 0) {
-    for (long i = 0; i < 2 * gens->nterms; i++) {
+    for (int64_t i = 0; i < 2 * gens->nterms; i++) {
       mpz_clear(*(gens->mpz_cfs[i]));
       free(gens->mpz_cfs[i]);
     }
@@ -435,11 +435,12 @@ static inline void display_monomials_from_array_maple(FILE *file, long length,
  * and we should go on to add a linear form with a
  * new variable. */
 static int undo_variable_order_change(data_gens_ff_t *gens) {
-  int32_t i, j;
-  int32_t len, tmp;
+  int32_t i;
+  int64_t j, len;
+  int32_t tmp;
   char *tmp_char = NULL;
   const int32_t cvo = gens->change_var_order;
-  const int32_t nvars = gens->nvars;
+  const int64_t nvars = gens->nvars;
   const int32_t ngens = gens->ngens;
 
   if (gens->linear_form_base_coef > 0) {
@@ -473,11 +474,12 @@ static int undo_variable_order_change(data_gens_ff_t *gens) {
 }
 static int change_variable_order_in_input_system(data_gens_ff_t *gens,
                                                  int32_t info_level) {
-  int32_t i, j;
-  int32_t len, tmp;
+  int32_t i;
+  int64_t j, len;
+  int32_t tmp;
   char *tmp_char = NULL;
   const int32_t cvo = gens->change_var_order;
-  const int32_t nvars = gens->nvars;
+  const int64_t nvars = gens->nvars;
 
   if (undo_variable_order_change(gens) == 0) {
     return 0;
@@ -798,9 +800,9 @@ static inline void initialize_mpz_param(mpz_param_t param, param_t *bparam) {
   }
 }
 
-static inline void reduce_generators(mpz_t **tmp, long nterms, int32_t *cfs,
+static inline void reduce_generators(mpz_t **tmp, int64_t nterms, int32_t *cfs,
                                      int32_t prime) {
-  for (int32_t i = 0; i < 2 * nterms; i += 2) {
+  for (int64_t i = 0; i < 2 * nterms; i += 2) {
     cfs[i / 2] = (int32_t)mpz_fdiv_ui(tmp[i][0], prime);
   }
 }

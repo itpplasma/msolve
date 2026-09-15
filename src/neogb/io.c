@@ -26,14 +26,14 @@
 static inline void set_exponent_vector(
         exp_t *ev,
         const int32_t *iev,  /* input exponent vectors */
-        const int32_t idx,
+        const int64_t idx,   /* term index, nv * idx may exceed 2^32 */
         const ht_t *ht,
         const md_t *st
         )
 {
     len_t i;
 
-    const len_t nv  = ht->nv;
+    const int64_t nv = ht->nv;
     const len_t ebl = ht->ebl;
     const len_t nev = st->nev;
     const len_t off = ebl - nev + 1;
@@ -260,7 +260,8 @@ void import_input_data(
         const int *invalid_gens
         )
 {
-    int32_t i, j;
+    int32_t i;
+    int64_t j;     /* term index over all generators, may exceed 2^31 */
     len_t k;
     hm_t *hm;
     len_t ctr = 0; /* ctr for valid input elements */
@@ -274,8 +275,8 @@ void import_input_data(
 
     ht_t *ht = bs->ht;
 
-    int32_t off       = 0; /* offset in arrays */
-    int32_t init_off  = 0;
+    int64_t off       = 0; /* offset in arrays */
+    int64_t init_off  = 0;
     const len_t fc    = st->fc;
 
     len_t ngens = stop - start;
